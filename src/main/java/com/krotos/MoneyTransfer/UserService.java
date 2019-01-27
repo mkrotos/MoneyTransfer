@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService {
+class UserService {
     @Autowired
     private UserDao userDao;
 
@@ -15,7 +16,8 @@ public class UserService {
     }
 
     User getByName(String name){
-        return userDao.findByName(name).get();
+        Optional<User> byName = userDao.findByName(name);
+        return byName.orElse(null);
     }
 
     List<User> getAll(){
@@ -25,8 +27,8 @@ public class UserService {
     void delete(long id){
         userDao.deleteById(id);
     }
-    void add(User user){
-        userDao.save(user);
+    User add(User user){
+        return userDao.save(user);
     }
 
 }
