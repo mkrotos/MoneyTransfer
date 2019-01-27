@@ -14,6 +14,10 @@ public class UserService {
         return userDao.getOne(id);
     }
 
+    User getByName(String name){
+        return userDao.findByName(name).get();
+    }
+
     List<User> getAll(){
         return userDao.findAll();
     }
