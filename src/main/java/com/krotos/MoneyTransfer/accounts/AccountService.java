@@ -1,6 +1,8 @@
 package com.krotos.MoneyTransfer.accounts;
 
 import lombok.NonNull;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.List;
 class AccountService {
     @Autowired
     private AccountDao accountDao;
+    private Logger log= LogManager.getLogger(this.getClass());
 
     List<Account> getAll() {
         return accountDao.findAll();
@@ -21,28 +24,34 @@ class AccountService {
     }
 
     Account add(Account account) {
+        log.info("Dodawanie konta "+account);
         return accountDao.save(account);
     }
 
-    void delete(long id) {
-        accountDao.deleteById(id);
+    void delete(long number) {
+        accountDao.deleteById(number);
+        log.info("Usunięto konta o numerze "+number);
     }
     //todo przerobić na sql i oddelegować do bazy
-    BigDecimal deposit(long id, BigDecimal moneys) {
-        Account account = accountDao.getOne(id);
+    BigDecimal deposit(long numer, BigDecimal amount) {
+        Account account = accountDao.getOne(numer);
         @NonNull BigDecimal oldValue = account.getMoneys();
-        BigDecimal newValue = oldValue.add(moneys);
+        BigDecimal newValue = oldValue.add(amount);
         account.setMoneys(newValue);
         accountDao.save(account);
+
+        log.info("Depozyt na konto: "+numer+" kwota: "+amount);
         return newValue;
     }
 
-    BigDecimal withdraw(long id, BigDecimal moneys) {
-        Account account = accountDao.getOne(id);
+    BigDecimal withdraw(long numer, BigDecimal amount) {
+        Account account = accountDao.getOne(numer);
         @NonNull BigDecimal oldValue = account.getMoneys();
-        BigDecimal newValue = oldValue.subtract(moneys);
+        BigDecimal newValue = oldValue.subtract(amount);
         account.setMoneys(newValue);
         accountDao.save(account);
+
+        log.info("Wyciąg z konta: "+numer+" kwota: "+amount);
         return newValue;
     }
 }

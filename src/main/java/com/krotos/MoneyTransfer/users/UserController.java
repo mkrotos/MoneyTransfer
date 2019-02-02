@@ -2,7 +2,6 @@ package com.krotos.MoneyTransfer.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.apache.logging.log4j.*;
 
 import java.util.List;
 
@@ -11,7 +10,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    private Logger log= LogManager.getLogger(this.getClass());
 
     @GetMapping
     List<User> getAll() {
@@ -25,22 +23,17 @@ public class UserController {
 
     @PostMapping("/create")
     User create(@RequestBody User user) {
-        User saved = userService.add(user);
-        log.info("Tworzem usera: " + saved);
-        return saved;
+        return userService.add(user);
     }
 
     @PutMapping("/{id}")
     User update(@PathVariable("id") long id, @RequestBody User user) {
-        User updated = userService.update(id, user);
-        log.info("Updejtuje usera: "+updated);
-        return updated;
+        return userService.update(id, user);
     }
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable("id") long id) {
         userService.delete(id);
-        log.info("Usuwam usera o id "+id);
     }
 
 }

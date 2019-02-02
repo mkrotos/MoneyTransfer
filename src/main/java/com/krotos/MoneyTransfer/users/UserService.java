@@ -1,5 +1,7 @@
 package com.krotos.MoneyTransfer.users;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import java.util.Optional;
 class UserService {
     @Autowired
     private UserDao userDao;
+    private Logger log= LogManager.getLogger(this.getClass());
 
     User getById(long id){
         return userDao.getOne(id);
@@ -26,16 +29,22 @@ class UserService {
 
     void delete(long id){
         userDao.deleteById(id);
+        log.info("Usuwam usera o id "+id);
     }
     User add(User user){
-        return userDao.save(user);
+        User saved = userDao.save(user);
+        log.info("Tworzem usera: " + saved);
+        return saved;
     }
     User update(long id,User user){
         User byId = userDao.getOne(id);
         byId.setName(user.getName());
         byId.setPassword(user.getPassword());
         byId.setRole(user.getRole());
-        return userDao.save(byId);
+
+        User updated = userDao.save(byId);
+        log.info("Updejtuje usera: "+updated);
+        return updated;
     }
 
 }
