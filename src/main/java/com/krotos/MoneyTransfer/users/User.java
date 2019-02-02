@@ -1,4 +1,4 @@
-package com.krotos.MoneyTransfer;
+package com.krotos.MoneyTransfer.users;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import javax.persistence.Id;
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long usrId;
     @NonNull
     private String name;
     @NonNull

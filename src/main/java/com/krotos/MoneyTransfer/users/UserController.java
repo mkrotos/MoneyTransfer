@@ -1,4 +1,4 @@
-package com.krotos.MoneyTransfer;
+package com.krotos.MoneyTransfer.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +32,15 @@ public class UserController {
 
     @PutMapping("/{id}")
     User update(@PathVariable("id") long id, @RequestBody User user) {
-        return userService.update(id, user);
+        User updated = userService.update(id, user);
+        log.info("Updejtuje usera: "+updated);
+        return updated;
     }
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable("id") long id) {
         userService.delete(id);
+        log.info("Usuwam usera o id "+id);
     }
 
 }
