@@ -24,8 +24,18 @@ public class UserController {
     @PostMapping("/create")
     User create(@RequestBody User user){
         User saved = userService.add(user);
+        //todo zamienić na loger
         System.out.println("Tworzem usera: "+saved);
         return saved;
+    }
+    @PutMapping("/{id}")
+    User update(@PathVariable("id") long id,@RequestBody User user){
+        return userService.update(id,user);
+    }
+
+    @DeleteMapping("/{id}")
+    void delete(@PathVariable("id") long id){
+        userService.delete(id);
     }
 
 }

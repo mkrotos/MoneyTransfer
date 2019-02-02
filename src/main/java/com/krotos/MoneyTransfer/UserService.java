@@ -30,5 +30,12 @@ class UserService {
     User add(User user){
         return userDao.save(user);
     }
+    User update(long id,User user){
+        User byId = userDao.getOne(id);
+        byId.setName(user.getName());
+        byId.setPassword(user.getPassword());
+        byId.setRole(user.getRole());
+        return userDao.save(byId);
+    }
 
 }
