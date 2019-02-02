@@ -1,21 +1,23 @@
 package com.krotos.MoneyTransfer.accounts;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "ACCOUNTS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountNumber;
+    @NonNull
     private BigDecimal moneys;
+
 }
