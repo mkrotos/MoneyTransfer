@@ -1,6 +1,7 @@
 package com.krotos.MoneyTransfer.accounts;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.krotos.MoneyTransfer.Currency;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,5 +20,13 @@ class Account {
     private long accountNumber;
     @NonNull
     private BigDecimal moneys;
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
+
+    @Enumerated(EnumType.STRING)
+    public Currency getCurrency() {
+        return currency;
+    }
 
 }

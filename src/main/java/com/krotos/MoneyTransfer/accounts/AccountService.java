@@ -24,8 +24,9 @@ class AccountService {
     }
 
     Account add(Account account) {
-        log.info("Dodawanie konta "+account);
-        return accountDao.save(account);
+        Account saved = accountDao.save(account);
+        log.info("Dodawanie konta "+saved);
+        return saved;
     }
 
     void delete(long number) {
@@ -40,7 +41,8 @@ class AccountService {
         account.setMoneys(newValue);
         accountDao.save(account);
 
-        log.info("Depozyt na konto: "+numer+" kwota: "+amount);
+        log.info(String.format( "Depozyt na konto: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f",
+                numer,amount,oldValue,newValue));
         return newValue;
     }
 
@@ -51,7 +53,9 @@ class AccountService {
         account.setMoneys(newValue);
         accountDao.save(account);
 
-        log.info("Wyciąg z konta: "+numer+" kwota: "+amount);
+
+        log.info(String.format( "Wyciąg z konta: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f",
+                numer,amount,oldValue,newValue));;
         return newValue;
     }
 }
