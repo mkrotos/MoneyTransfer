@@ -6,10 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MoneyTransferApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MoneyTransferApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MoneyTransferApplication.class, args);
+    }
 
-	//todo dodać klienta do pobierania kursów z innego servisu, odświerzanie co 15 min
+
+    //todo dodać klienta do pobierania kursów z innego servisu, odświerzanie co 15 min
+
+
 }
 
