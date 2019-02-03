@@ -5,14 +5,14 @@ import com.krotos.MoneyTransfer.Currency;
 import java.util.Iterator;
 import java.util.List;
 
-public class ExchangeRates {
+class ExchangeRates {
     private List<Rate> rates;
 
     ExchangeRates(List<Rate> rates) {
         this.rates = rates;
     }
 
-    public double getUSDValue(Currency currency){
+    double getUSDValue(Currency currency){
         return rates.stream().filter(r->r.getCurrency()==currency).findFirst().get().getUSDValue();
     }
 

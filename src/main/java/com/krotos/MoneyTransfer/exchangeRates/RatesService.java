@@ -1,5 +1,6 @@
 package com.krotos.MoneyTransfer.exchangeRates;
 
+import com.krotos.MoneyTransfer.Currency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,18 @@ public class RatesService {
         return rateDao.findAll();
     }
 
-    public ExchangeRates getExchangeRates(){
+    private ExchangeRates getExchangeRates(){
         if(exchangeRates==null){
             exchangeRates=new ExchangeRates(getAll());
         }
         return exchangeRates;
     }
+
+    public double getUSDValue(Currency currency){
+        return getExchangeRates().getUSDValue(currency);
+    }
+
+    //todo dodać klienta do pobierania kursów z innego servisu, odświerzanie co 15 min
 
     void saveToBase(){
         Iterator<Rate> iterator = exchangeRates.getIterator();

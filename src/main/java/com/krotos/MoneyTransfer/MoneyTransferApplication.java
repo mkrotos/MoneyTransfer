@@ -10,9 +10,5 @@ public class MoneyTransferApplication {
         SpringApplication.run(MoneyTransferApplication.class, args);
     }
 
-
-    //todo dodać klienta do pobierania kursów z innego servisu, odświerzanie co 15 min
-
-
 }
 
