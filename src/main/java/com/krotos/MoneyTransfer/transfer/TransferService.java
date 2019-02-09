@@ -25,6 +25,11 @@ class TransferService {
 
     void transfer(Transfer transfer) {
         log.info(transfer);
+        transferMoneys(transfer);
+        saveToDB(transfer);
+    }
+
+    private void transferMoneys(Transfer transfer) {
         Account fromAccount = accountService.getByNumber(transfer.getFromAccountNumber());
         Account toAccount = accountService.getByNumber(transfer.getToAccountNumber());
 
@@ -34,21 +39,40 @@ class TransferService {
         BigDecimal initialValue = transfer.getAmount();
 
         if (fromCurrency == toCurrency && fromCurrency == inCurrency) {
-            accountService.withdraw(transfer.getToAccountNumber(), initialValue);
-            accountService.deposit(transfer.getToAccountNumber(), initialValue);
+            transferWithoutConversion(transfer);
         } else {
-            BigDecimal usdValue = initialValue.multiply(ratesService.getUSDValue(inCurrency));
-            BigDecimal valueToDeposit = usdValue.divide(ratesService.getUSDValue(toCurrency), RoundingMode.HALF_UP);
-            BigDecimal valueToWithdraw = usdValue.divide(ratesService.getUSDValue(fromCurrency),RoundingMode.HALF_UP);
-
-            accountService.withdraw(transfer.getFromAccountNumber(),valueToWithdraw);
-            accountService.deposit(transfer.getToAccountNumber(),valueToDeposit);
+            transferWithConversion(transfer, fromCurrency, inCurrency, toCurrency, initialValue);
         }
-
-        saveToDB(transfer);
     }
 
-    private Transfer saveToDB(Transfer transfer) {
-        return transferDao.save(transfer);
+    private void transferWithoutConversion(Transfer transfer) {
+        BigDecimal initialValue = transfer.getAmount();
+        transferConvertedValues(transfer, initialValue, initialValue);
+    }
+
+    private void transferWithConversion(Transfer transfer, Currency fromCurrency, Currency inCurrency,
+                                        Currency toCurrency, BigDecimal initialValue) {
+        BigDecimal usdValue = toUSDValue(inCurrency, initialValue);
+        BigDecimal valueToDeposit = fromUSDValue(toCurrency, usdValue);
+        BigDecimal valueToWithdraw = fromUSDValue(fromCurrency, usdValue);
+
+        transferConvertedValues(transfer, valueToDeposit, valueToWithdraw);
+    }
+
+    private BigDecimal fromUSDValue(Currency toCurrency, BigDecimal usdValue) {
+        return usdValue.divide(ratesService.getUSDValue(toCurrency), RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal toUSDValue(Currency inCurrency, BigDecimal initialValue) {
+        return initialValue.multiply(ratesService.getUSDValue(inCurrency));
+    }
+
+    private void transferConvertedValues(Transfer transfer, BigDecimal valueToDeposit, BigDecimal valueToWithdraw) {
+        accountService.withdraw(transfer.getFromAccountNumber(), valueToWithdraw);
+        accountService.deposit(transfer.getToAccountNumber(), valueToDeposit);
+    }
+
+    private void saveToDB(Transfer transfer) {
+        transferDao.save(transfer);
     }
 }

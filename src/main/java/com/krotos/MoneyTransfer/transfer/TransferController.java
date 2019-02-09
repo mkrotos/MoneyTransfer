@@ -15,7 +15,6 @@ public class TransferController {
 
     @PostMapping
     void transfer(@RequestBody Transfer transfer) {
-        System.out.println("Transfer");
         transferService.transfer(transfer);
     }
 }

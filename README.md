@@ -4,7 +4,6 @@ REST API for transferring moneys
 #### Technologies used
 - Spring Boot
 - Spring Security
-- HATEOAS
 - JPA
 - H2
 - Maven
