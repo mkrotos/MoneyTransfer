@@ -53,7 +53,6 @@ public class AccountService {
         account.setMoneys(newValue);
         accountDao.save(account);
 
-
         log.info(String.format( "Wyciąg z konta: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f %s",
                 numer,amount,oldValue,newValue,account.getCurrency()));
         return newValue;

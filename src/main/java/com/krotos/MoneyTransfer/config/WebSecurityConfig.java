@@ -1,4 +1,4 @@
-package com.krotos.MoneyTransfer;
+package com.krotos.MoneyTransfer.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
