@@ -6,12 +6,18 @@ import java.util.concurrent.TimeUnit;
 
 public class ExchangeRatesUpdater {
 
-    public void start() {
-        ScheduledExecutorService updater = Executors.newSingleThreadScheduledExecutor(DaemonFactory.produceDaemon("Rates Updater"));
-        updater.scheduleAtFixedRate(updateRates(),0,15, TimeUnit.SECONDS);
+    private MyHttpClient myHttpClient = new MyHttpClient();
+
+    public void start(long period) {
+        ScheduledExecutorService updater = Executors
+                .newSingleThreadScheduledExecutor(DaemonFactory.produceDaemon("Rates Updater"));
+        updater.scheduleAtFixedRate(updateRates(), 0, period, TimeUnit.MINUTES);
     }
 
-    private Runnable updateRates(){
-        return () -> System.out.println("update");
+    private Runnable updateRates() {
+        return () -> {
+            System.out.println("update");
+            myHttpClient.boo();
+        };
     }
 }

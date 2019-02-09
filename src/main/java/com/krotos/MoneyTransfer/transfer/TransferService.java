@@ -37,16 +37,15 @@ class TransferService {
             accountService.withdraw(transfer.getToAccountNumber(), initialValue);
             accountService.deposit(transfer.getToAccountNumber(), initialValue);
         } else {
-            BigDecimal usdvalue = initialValue.multiply(ratesService.getUSDValue(inCurrency));
-            BigDecimal valueToDeposit = usdvalue.divide(ratesService.getUSDValue(toCurrency), RoundingMode.HALF_UP);
-            BigDecimal valueToWithdraw = usdvalue.divide(ratesService.getUSDValue(fromCurrency),RoundingMode.HALF_UP);
+            BigDecimal usdValue = initialValue.multiply(ratesService.getUSDValue(inCurrency));
+            BigDecimal valueToDeposit = usdValue.divide(ratesService.getUSDValue(toCurrency), RoundingMode.HALF_UP);
+            BigDecimal valueToWithdraw = usdValue.divide(ratesService.getUSDValue(fromCurrency),RoundingMode.HALF_UP);
 
             accountService.withdraw(transfer.getFromAccountNumber(),valueToWithdraw);
             accountService.deposit(transfer.getToAccountNumber(),valueToDeposit);
         }
 
         saveToDB(transfer);
-
     }
 
     private Transfer saveToDB(Transfer transfer) {

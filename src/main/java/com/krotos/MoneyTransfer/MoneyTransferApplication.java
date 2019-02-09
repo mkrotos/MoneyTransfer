@@ -15,7 +15,7 @@ public class MoneyTransferApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         ExchangeRatesUpdater exchangeRatesUpdater = new ExchangeRatesUpdater();
-        exchangeRatesUpdater.start();
+        exchangeRatesUpdater.start(5);
     }
 }
 
