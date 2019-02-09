@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-class AccountService {
+public class AccountService {
     @Autowired
     private AccountDao accountDao;
     private Logger log= LogManager.getLogger(this.getClass());
@@ -19,7 +19,7 @@ class AccountService {
         return accountDao.findAll();
     }
 
-    Account getByNumber(long accountNumber) {
+    public Account getByNumber(long accountNumber) {
         return accountDao.getOne(accountNumber);
     }
 
@@ -31,22 +31,22 @@ class AccountService {
 
     void delete(long number) {
         accountDao.deleteById(number);
-        log.info("Usunięto konta o numerze "+number);
+        log.info("Usunięto konto o numerze "+number);
     }
     //todo przerobić na sql i oddelegować do bazy
-    BigDecimal deposit(long numer, BigDecimal amount) {
+    public BigDecimal deposit(long numer, BigDecimal amount) {
         Account account = accountDao.getOne(numer);
         @NonNull BigDecimal oldValue = account.getMoneys();
         BigDecimal newValue = oldValue.add(amount);
         account.setMoneys(newValue);
         accountDao.save(account);
 
-        log.info(String.format( "Depozyt na konto: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f",
-                numer,amount,oldValue,newValue));
+        log.info(String.format( "Depozyt na konto: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f %s",
+                numer,amount,oldValue,newValue,account.getCurrency()));
         return newValue;
     }
 
-    BigDecimal withdraw(long numer, BigDecimal amount) {
+    public BigDecimal withdraw(long numer, BigDecimal amount) {
         Account account = accountDao.getOne(numer);
         @NonNull BigDecimal oldValue = account.getMoneys();
         BigDecimal newValue = oldValue.subtract(amount);
@@ -54,8 +54,8 @@ class AccountService {
         accountDao.save(account);
 
 
-        log.info(String.format( "Wyciąg z konta: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f",
-                numer,amount,oldValue,newValue));;
+        log.info(String.format( "Wyciąg z konta: %016d kwota: %.2f stara wartość: %.2f nowa wartość: %.2f %s",
+                numer,amount,oldValue,newValue,account.getCurrency()));
         return newValue;
     }
 }

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @Table(name = "ACCOUNTS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-class Account {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountNumber;

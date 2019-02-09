@@ -4,6 +4,7 @@ import com.krotos.MoneyTransfer.Currency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class RatesService {
         return exchangeRates;
     }
 
-    public double getUSDValue(Currency currency){
+    public BigDecimal getUSDValue(Currency currency){
         return getExchangeRates().getUSDValue(currency);
     }
 

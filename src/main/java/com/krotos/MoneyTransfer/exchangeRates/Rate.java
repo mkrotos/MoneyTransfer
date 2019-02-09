@@ -4,6 +4,7 @@ import com.krotos.MoneyTransfer.Currency;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,6 @@ public class Rate {
     @Enumerated(EnumType.STRING)
     private Currency currency;
     @NonNull
-    private double USDValue;
+    private BigDecimal USDValue;
 
 }
