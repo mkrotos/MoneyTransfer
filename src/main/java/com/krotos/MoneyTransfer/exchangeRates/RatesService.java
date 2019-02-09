@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -14,27 +13,33 @@ public class RatesService {
     @Autowired
     private RateDao rateDao;
 
-    private List<Rate> getAll(){
+    private List<Rate> getAll() {
         return rateDao.findAll();
     }
 
-    private ExchangeRates getExchangeRates(){
-        if(exchangeRates==null){
-            exchangeRates=new ExchangeRates(getAll());
+    private ExchangeRates getExchangeRates() {
+        if (exchangeRates == null) {
+            exchangeRates = new ExchangeRates(getAll());
         }
         return exchangeRates;
     }
 
-    public BigDecimal getUSDValue(Currency currency){
+    public BigDecimal getUSDValue(Currency currency) {
         return getExchangeRates().getUSDValue(currency);
     }
 
-    //todo dodać klienta do pobierania kursów z innego servisu, odświerzanie co 15 min
+    public void updateRate(Currency currency, double usdValue) {
+        getExchangeRates().updateRate(currency, usdValue);
+        saveRateToBase(currency, usdValue);
+    }
 
-    void saveToBase(){
-        Iterator<Rate> iterator = exchangeRates.getIterator();
-        while (iterator.hasNext()){
-            rateDao.save(iterator.next());
-        }
+    private void saveRateToBase(Currency currency, double usdValue) {
+        Rate rateFromBase = getRateFromBase(currency);
+        rateFromBase.setUSDValue(BigDecimal.valueOf(usdValue));
+        rateDao.save(rateFromBase);
+    }
+
+    private Rate getRateFromBase(Currency currency) {
+        return rateDao.findByCurrency(currency).orElse(new Rate(currency, BigDecimal.ZERO));
     }
 }

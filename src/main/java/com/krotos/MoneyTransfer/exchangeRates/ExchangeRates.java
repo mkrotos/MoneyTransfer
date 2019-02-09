@@ -5,6 +5,7 @@ import com.krotos.MoneyTransfer.Currency;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 class ExchangeRates {
     private List<Rate> rates;
@@ -18,11 +19,18 @@ class ExchangeRates {
     }
 
     void updateRate(Currency currency, double usdValue){
-        rates.stream().filter(r->r.getCurrency()==currency).findFirst().get().setUSDValue(BigDecimal.valueOf(usdValue));
+        Optional<Rate> optionalRate = rates.stream().filter(r -> r.getCurrency() == currency).findFirst();
+        optionalRate.get().setUSDValue(BigDecimal.valueOf(usdValue));
     }
 
     Iterator<Rate> getIterator(){
         return rates.iterator();
     }
 
+    @Override
+    public String toString() {
+        return "ExchangeRates{" +
+                "rates=" + rates +
+                '}';
+    }
 }

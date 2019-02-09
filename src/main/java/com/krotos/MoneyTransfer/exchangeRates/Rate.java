@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "EXCHANGE_RATES")
-public class Rate {
+class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rateId;
@@ -22,4 +22,11 @@ public class Rate {
     @NonNull
     private BigDecimal USDValue;
 
+    synchronized BigDecimal getUSDValue() {
+        return USDValue;
+    }
+
+    synchronized void setUSDValue(BigDecimal USDValue) {
+        this.USDValue = USDValue;
+    }
 }
